@@ -30,6 +30,7 @@ def create_tables():
                     name TEXT NOT NULL,
                     detail TEXT
                     )''')
+ 
     
     cursor.execute('''
                     CREATE TABLE IF NOT EXISTS Video (
