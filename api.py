@@ -249,39 +249,48 @@ def search_videos():
 @app.route('/create_permission', methods=['POST'])
 def create_permission():
     user_id = request.form['user_id']
+    password = request.form['password']
+    target_user_id = request.form['target_user_id']
     dog_id = request.form['dog_id']
 
-    conn = get_db()
-    cursor = conn.cursor()
+    cursor = get_db().cursor()
+    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND position ='normal'", (user_id, password))
+    row = cursor.fetchone()
 
-    # 检查用户ID是否存在于User表中
-    cursor.execute('SELECT * FROM User WHERE User_ID = ?', (user_id,))
-    user = cursor.fetchone()
-
-    if not user:
-        return jsonify({'error': 'Invalid User ID'})
-
-    # 检查狗ID是否存在于Dog表中
-    cursor.execute('SELECT * FROM Dog WHERE dogID = ?', (dog_id,))
-    dog = cursor.fetchone()
-
-    if not dog:
-        return jsonify({'error': 'Invalid Dog ID'})
-
-    cursor.execute('SELECT * FROM Permission WHERE UserID = ?', (user_id,))
-    existing_permission = cursor.fetchone()
-
-    if existing_permission:
-        # 用户已存在，更新狗ID
-        cursor.execute('UPDATE Permission SET dogID = ? WHERE UserID = ?', (dog_id, user_id))
+    if row:
+        return 'Your position is normal, you cannot create permission!!!'
     else:
-        # 创建新的用户-狗关联
-        cursor.execute('INSERT INTO Permission (UserID, dogID) VALUES (?, ?)', (user_id, dog_id))
+        conn = get_db()
+        cursor = conn.cursor()
 
-    conn.commit()
+        # 检查用户ID是否存在于User表中
+        cursor.execute('SELECT * FROM User WHERE User_ID = ?', (target_user_id,))
+        target_user = cursor.fetchone()
 
-    return jsonify({'message': 'Permission updated successfully'})
+        if not target_user:
+            return 'Invalid User ID'
 
+        # 检查狗ID是否存在于Dog表中
+        cursor.execute('SELECT * FROM Dog WHERE dogID = ?', (dog_id,))
+        dog = cursor.fetchone()
+
+        if not dog:
+            return 'Invalid Dog ID'
+
+        cursor.execute('SELECT * FROM Permission WHERE UserID = ?', (user_id,))
+        existing_permission = cursor.fetchone()
+
+        if existing_permission:
+            # 用户已存在，更新狗ID
+            cursor.execute('UPDATE Permission SET dogID = ? WHERE UserID = ?', (dog_id, user_id))
+        else:
+            # 创建新的用户-狗关联
+            cursor.execute('INSERT INTO Permission (UserID, dogID) VALUES (?, ?)', (user_id, dog_id))
+
+        conn.commit()
+
+        return 'Permission updated successfully'
+        
 #End of dog api
 
 if __name__ == '__main__':
