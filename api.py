@@ -223,17 +223,27 @@ def upload_video():
 #for search_videos
 @app.route('/search_videos', methods=['GET'])
 def search_videos():
+    user_id = request.args.get('User_ID')
+    password = request.args.get('password')
     dog_id = request.args.get('dog_id')
 
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Video WHERE dogID = ?", (dog_id,))
-    videos = cursor.fetchall()
-    conn.close()
+    cursor = get_db().cursor()
+    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND position ='normal'", (user_id, password))
+    row = cursor.fetchone()
+    if row:
+        return 'Your position is normal, you cannot search videos!!!'
+    else:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Video WHERE dogID = ?", (dog_id,))
+        videos = cursor.fetchall()
+        conn.close()
 
-    video_data_list = [(video[3], video[2]) for video in videos]
-
-    return render_template('video.html', video_data_list=video_data_list, dog_id=dog_id)
+        if videos:
+            video_data_list = [(video[3], video[2]) for video in videos]
+            return render_template('video.html', video_data_list=video_data_list, dog_id=dog_id)
+        else:
+            return 'Error dogID, cannot found the dog!!!'
 
 # API路由：创建或更新用户与狗的关联
 @app.route('/create_permission', methods=['POST'])
