@@ -78,7 +78,7 @@ with app.app_context():
     cursor = conn.cursor()
     
     
-
+    
     conn.commit()
     cursor.execute("SELECT * FROM User")
     users = cursor.fetchall()
