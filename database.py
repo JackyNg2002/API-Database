@@ -22,7 +22,7 @@ def create_tables():
     cursor.execute('''CREATE TABLE IF NOT EXISTS User (
                     User_ID TEXT PRIMARY KEY,
                     name TEXT,
-                    position TEXT,
+                    position TEXT CHECK (position IN ('manager', 'admin', 'normal')),
                     password TEXT
                     )''')
 
@@ -77,10 +77,21 @@ with app.app_context():
     cursor = conn.cursor()
     
     conn.commit()
+    cursor.execute("SELECT * FROM User")
+    users = cursor.fetchall()
     cursor.execute("SELECT * FROM Video")
     rows = cursor.fetchall()
 
-    
+    for user in users:
+        
+        user_id = user["User_ID"]
+        name = user["name"]
+        position = user["position"]
+        password = user["password"]
+        
+        print(f"User_ID: {user_id}, name: {name}, position: {position}, password: {password}")
+
+
     for row in rows:
         
         video_id = row["videoID"]
