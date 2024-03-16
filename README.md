@@ -1,6 +1,6 @@
 # API-Database
 API&amp;Database<br />
-啲data已經喺曬個database裏面, 當你run database.python嘅時候, 應該要出到下面嗰啲data:<br /><br />
+啲data已經喺曬個database裏面, 當你run database.py嘅時候, 應該要出到下面嗰啲data:<br /><br />
 User_ID: U001, name: John Doe, position: manager, password: password123<br />
 User_ID: U002, name: Jane Smith, position: admin, password: password456<br />
 User_ID: U003, name: David Johnson, position: normal, password: password789<br />
