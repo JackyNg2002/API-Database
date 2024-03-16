@@ -26,7 +26,7 @@ def create_tables():
                     )''')
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS Dog (
-                    dogID INTEGER PRIMARY KEY,
+                    dogID TEXT PRIMARY KEY,
                     name TEXT NOT NULL,
                     detail TEXT
                     )''')
@@ -55,8 +55,8 @@ def create_tables():
     cursor.execute('''
                         CREATE TABLE IF NOT EXISTS Permission (
                             UserID TEXT PRIMARY KEY,
-                            dogID TEXT NOT NULL
-                            FOREIGN KEY (dogID) REFERENCES Dog (dogID)
+                            dogID TEXT NOT NULL,
+                            FOREIGN KEY (dogID) REFERENCES Dog (dogID),
                             FOREIGN KEY (UserID) REFERENCES User (User_ID)
                         )
                     ''')
