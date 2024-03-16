@@ -1,8 +1,9 @@
 from flask import g
 import sqlite3
 import uuid
+from flask import Flask
 
-
+app = Flask(__name__)
 DATABASE = 'database.db'
 
 def get_db():
@@ -70,4 +71,21 @@ def generate_user_id():
     user_id = 'U' + str(count + 1).zfill(3)
     return user_id
 
+with app.app_context():
+    
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    conn.commit()
+    cursor.execute("SELECT * FROM Video")
+    rows = cursor.fetchall()
 
+    
+    for row in rows:
+        
+        video_id = row["videoID"]
+        dog_id = row["dogID"]
+        datetime = row["datetime"]
+        video_src = row["videoSrc"]
+        
+        print(f"Video ID: {video_id}, Dog ID: {dog_id}, Datetime: {datetime}, Video Src: {video_src}")
