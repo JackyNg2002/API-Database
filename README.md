@@ -12,4 +12,6 @@ Video ID: V002, Dog ID: D002, Datetime: 16/03/2024, Video Src: static/videos\1 M
 Video ID: V003, Dog ID: D003, Datetime: 16/03/2024, Video Src: static/videos\The Wait  - 1 Minute Short Film _ Award Winning.mp4<br />
 UserID: U001, dogID: D002<br />
 UserID: U002, dogID: D002<br /><br />
-如果出唔到嘅再搵我
+如果出唔到嘅再搵我<br /><br />
+冇map table嘅資料嘅原因係因為html唔支援multi folder嘅upload, 淨係支援multi file,所以擺唔到入去<br /><br />
+啲database foreign key已經set好曬<br /><br />
