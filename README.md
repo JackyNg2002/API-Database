@@ -15,3 +15,4 @@ UserID: U002, dogID: D002<br /><br />
 如果出唔到嘅再搵我<br /><br />
 冇map table嘅資料嘅原因係因為html唔支援multi folder嘅upload, 淨係支援multi file,所以擺唔到入去<br /><br />
 啲database foreign key已經set好曬<br /><br />
+喺個api入面,我喺三個地方set咗constraint: (create_permission, search_videos, info_dog),要個用戶輸入user id同埋password去check佢個position係咪normal(我入面嘅position setting係manager admin同埋normal, manager同admin咩都做到),如果check到佢係normal嘅話就唔畀佢繼續做落去
