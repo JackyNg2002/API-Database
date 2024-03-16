@@ -3,8 +3,10 @@ from database import create_tables, generate_user_id, get_db
 import os
 import datetime
 
+
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/videos'
+
 
 @app.teardown_appcontext
 def close_db(exception):
@@ -21,6 +23,8 @@ def initialize_db():
 def create_upload_folder():
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
+
+
 
 @app.route('/')
 def index():
