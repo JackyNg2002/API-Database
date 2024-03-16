@@ -226,7 +226,42 @@ def search_videos():
 
     return render_template('video.html', video_data_list=video_data_list, dog_id=dog_id)
 
+# API路由：创建或更新用户与狗的关联
+@app.route('/create_permission', methods=['POST'])
+def create_permission():
+    user_id = request.form['user_id']
+    dog_id = request.form['dog_id']
 
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # 检查用户ID是否存在于User表中
+    cursor.execute('SELECT * FROM User WHERE User_ID = ?', (user_id,))
+    user = cursor.fetchone()
+
+    if not user:
+        return jsonify({'error': 'Invalid User ID'})
+
+    # 检查狗ID是否存在于Dog表中
+    cursor.execute('SELECT * FROM Dog WHERE dogID = ?', (dog_id,))
+    dog = cursor.fetchone()
+
+    if not dog:
+        return jsonify({'error': 'Invalid Dog ID'})
+
+    cursor.execute('SELECT * FROM Permission WHERE UserID = ?', (user_id,))
+    existing_permission = cursor.fetchone()
+
+    if existing_permission:
+        # 用户已存在，更新狗ID
+        cursor.execute('UPDATE Permission SET dogID = ? WHERE UserID = ?', (dog_id, user_id))
+    else:
+        # 创建新的用户-狗关联
+        cursor.execute('INSERT INTO Permission (UserID, dogID) VALUES (?, ?)', (user_id, dog_id))
+
+    conn.commit()
+
+    return jsonify({'message': 'Permission updated successfully'})
 
 #End of dog api
 
