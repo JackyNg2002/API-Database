@@ -132,22 +132,31 @@ def create_dog():
 #for dog info  
 @app.route('/info_dog', methods=['GET'])
 def info_dog():
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM Dog')
-    dogs = cursor.fetchall()
+    user_id = request.args.get('User_ID')
+    password = request.args.get('password')
 
-    dog_list = []
-    if dogs:
-        for dog in dogs:
-            dog_data = {
-                'dogID': dog[0],
-                'name': dog[1],
-                'detail': dog[2]
-            }
-            dog_list.append(dog_data)
+    cursor = get_db().cursor()
+    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND position ='normal'", (user_id, password))
+    row = cursor.fetchone()
+    if row:
+        return 'Your position is normal, you cannot check dog info!!!'
+    else:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Dog')
+        dogs = cursor.fetchall()
 
-    return jsonify(dog_list)
+        dog_list = []
+        if dogs:
+            for dog in dogs:
+                dog_data = {
+                    'dogID': dog[0],
+                    'name': dog[1],
+                    'detail': dog[2]
+                }
+                dog_list.append(dog_data)
+
+        return jsonify(dog_list)
 
 #for update_dog  
 @app.route('/update_dog', methods=['POST'])
