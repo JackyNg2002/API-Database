@@ -119,12 +119,12 @@ with app.app_context():
 
     for map in maps:
         
-        user_id = map["mapID"]
-        name = map["dogID"]
-        position = map["datetime"]
-        password = map["mapSrc"]
+        mapID = map["mapID"]
+        dogID = map["dogID"]
+        datetime = map["datetime"]
+        mapSrc = map["mapSrc"]
         
-        print(f"User_ID: {user_id}, name: {name}, position: {position}, password: {password}")
+        print(f"mapID: {mapID}, dogID: {dogID}, datetime: {datetime}, mapSrc: {mapSrc}")
 
     for video in videos:
         
