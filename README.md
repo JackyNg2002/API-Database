@@ -1,17 +1,31 @@
 # API-Database
 API&amp;Database<br />
 啲data已經喺曬個database裏面, 當你run database.py嘅時候, 應該要出到下面嗰啲data:<br /><br />
-User_ID: U001, name: John Doe, position: manager, password: password123<br />
-User_ID: U002, name: Jane Smith, position: admin, password: password456<br />
-User_ID: U003, name: David Johnson, position: normal, password: password789<br />
-dogID: D001, name: Max, detail: Golden Retriever<br />
-dogID: D002, name: Bella, detail: Labrador Retriever<br />
-dogID: D003, name: Charlie, detail: German Shepherd<br />
-Video ID: V001, Dog ID: D001, Datetime: 16/03/2024, Video Src: static/videos\What Happens In One Minute_.mp4<br />
-Video ID: V002, Dog ID: D002, Datetime: 16/03/2024, Video Src: static/videos\1 Minute Video - Doggie.mp4<br />
-Video ID: V003, Dog ID: D003, Datetime: 16/03/2024, Video Src: static/videos\The Wait  - 1 Minute Short Film _ Award Winning.mp4<br />
-UserID: U001, dogID: D002<br />
-UserID: U002, dogID: D002<br /><br />
+User_ID: U001, name: jacky, position: manager, password: 123<br />
+User_ID: U002, name: ken, position: admin, password: 456<br />
+User_ID: U003, name: fai, position: normal, password: 789<br />
+dogID: D001, name: idk, detail: good<br />
+dogID: D002, name: ido, detail: good<br />
+dogID: D003, name: idp, detail: good<br />
+mapID: D001_Nitro_Wallpaper_01_3840x2400, dogID: D001, datetime: 2024-03-23 19:32:25, mapSrc: static/maps\D001\D001_Nitro_Wallpaper_01_3840x2400.jpg<br />
+mapID: D001_Nitro_Wallpaper_02_3840x2400, dogID: D001, datetime: 2024-03-23 19:32:25, mapSrc: static/maps\D001\D001_Nitro_Wallpaper_02_3840x2400.jpg<br />
+mapID: D001_Nitro_Wallpaper_03_3840x2400, dogID: D001, datetime: 2024-03-23 19:32:25, mapSrc: static/maps\D001\D001_Nitro_Wallpaper_03_3840x2400.jpg<br />
+mapID: D001_Nitro_Wallpaper_04_3840x2400, dogID: D001, datetime: 2024-03-23 19:32:25, mapSrc: static/maps\D001\D001_Nitro_Wallpaper_04_3840x2400.jpg<br />
+mapID: D002_Nitro_Wallpaper_01_3840x2400, dogID: D002, datetime: 2024-03-23 19:32:37, mapSrc: static/maps\D002\D002_Nitro_Wallpaper_01_3840x2400.jpg<br />
+mapID: D002_Nitro_Wallpaper_02_3840x2400, dogID: D002, datetime: 2024-03-23 19:32:37, mapSrc: static/maps\D002\D002_Nitro_Wallpaper_02_3840x2400.jpg<br />
+mapID: D002_Nitro_Wallpaper_03_3840x2400, dogID: D002, datetime: 2024-03-23 19:32:37, mapSrc: static/maps\D002\D002_Nitro_Wallpaper_03_3840x2400.jpg<br />
+mapID: D002_Nitro_Wallpaper_04_3840x2400, dogID: D002, datetime: 2024-03-23 19:32:37, mapSrc: static/maps\D002\D002_Nitro_Wallpaper_04_3840x2400.jpg<br />
+mapID: D003_Nitro_Wallpaper_01_3840x2400, dogID: D003, datetime: 2024-03-23 19:32:47, mapSrc: static/maps\D003\D003_Nitro_Wallpaper_01_3840x2400.jpg<br />
+mapID: D003_Nitro_Wallpaper_02_3840x2400, dogID: D003, datetime: 2024-03-23 19:32:47, mapSrc: static/maps\D003\D003_Nitro_Wallpaper_02_3840x2400.jpg<br />
+mapID: D003_Nitro_Wallpaper_03_3840x2400, dogID: D003, datetime: 2024-03-23 19:32:47, mapSrc: static/maps\D003\D003_Nitro_Wallpaper_03_3840x2400.jpg<br />
+mapID: D003_Nitro_Wallpaper_04_3840x2400, dogID: D003, datetime: 2024-03-23 19:32:47, mapSrc: static/maps\D003\D003_Nitro_Wallpaper_04_3840x2400.jpg<br />
+Video ID: V001, Dog ID: D001, Datetime: 2024-03-23 19:26:19, Video Src: static/VIDEOS\D001\1 minute funny videos.mp4<br />
+Video ID: V002, Dog ID: D002, Datetime: 2024-03-23 19:27:33, Video Src: static/VIDEOS\D002\The Wait  - 1 Minute Short Film _ Award Winning.mp4<br />
+Video ID: V003, Dog ID: D003, Datetime: 2024-03-23 19:27:40, Video Src: static/VIDEOS\D003\1 Minute Video - Doggie.mp4<br />
+Video ID: V004, Dog ID: D003, Datetime: 2024-03-23 19:27:58, Video Src: static/VIDEOS\D003\The Wait  - 1 Minute Short Film _ Award Winning.mp4<br />
+UserID: U001, dogID: D001<br />
+UserID: U002, dogID: D003<br />
+UserID: U003, dogID: D003<br />
 如果出唔到嘅再搵我<br /><br />
 冇map table嘅資料嘅原因係因為html唔支援multi folder嘅upload, 淨係支援multi file,所以擺唔到入去<br /><br />
 啲database foreign key已經set好曬<br /><br />
