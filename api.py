@@ -300,6 +300,24 @@ def create_permission():
         return 'You do not have permission to create permission !!!'
 # end of create_permission api       
 
+@app.route('/show_permission', methods=['GET'])
+def show_permission():
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Permission')
+        permissions = cursor.fetchall()
+
+        permissions_list = []
+        if permissions:
+            for permission in permissions:
+                permission_data = {
+                    'UserID': permission[0],
+                    'dogID': permission[1]
+                }
+                permissions_list.append(permission_data)
+
+        return jsonify(permissions_list)
+
 # delete permission
 @app.route('/delete_permission', methods=['POST'])
 def delete_permission():
