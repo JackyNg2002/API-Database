@@ -210,7 +210,7 @@ def upload_video():
             # Save the video file to a folder
             video_folder = os.path.join(app.config['UPLOAD_VIDEOS'], dog_id)
             os.makedirs(video_folder, exist_ok=True)
-            
+
             video_path = os.path.join(video_folder, video_file.filename)
             video_file.save(video_path)
             # Get the current date
@@ -265,7 +265,7 @@ def create_permission():
     dog_id = request.form['dog_id']
 
     cursor = get_db().cursor()
-    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND position ='normal'", (user_id, password))
+    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND (position ='admin' OR position ='manager')", (user_id, password))
     row = cursor.fetchone()
 
     if row:
