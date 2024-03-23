@@ -136,6 +136,6 @@ with app.app_context():
         print(f"Video ID: {video_id}, Dog ID: {dog_id}, Datetime: {datetime}, Video Src: {video_src}")
 
     for permission in permissions:
-        UserID = permission[0]  
-        dogID = permission[1]
+        UserID = permission["UserID"]  
+        dogID = permission["dogID"]
         print(f"UserID: {UserID}, dogID: {dogID}")

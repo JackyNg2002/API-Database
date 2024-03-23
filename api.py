@@ -269,9 +269,6 @@ def create_permission():
     row = cursor.fetchone()
 
     if row:
-        conn = get_db()
-        cursor = conn.cursor()
-
         # 检查用户ID是否存在于User表中
         cursor.execute('SELECT * FROM User WHERE User_ID = ?', (target_user_id,))
         target_user = cursor.fetchone()
@@ -286,21 +283,20 @@ def create_permission():
         if not dog:
             return 'Invalid Dog ID'
 
-        cursor.execute('SELECT * FROM Permission WHERE UserID = ?', (user_id,))
+        cursor.execute('SELECT * FROM Permission WHERE UserID = ?', (target_user_id,))
         existing_permission = cursor.fetchone()
 
         if existing_permission:
             # 用户已存在，更新狗ID
-            cursor.execute('UPDATE Permission SET dogID = ? WHERE UserID = ?', (dog_id, user_id))
+            cursor.execute('UPDATE Permission SET dogID = ? WHERE UserID = ?', (dog_id, target_user_id))
         else:
             # 创建新的用户-狗关联
-            cursor.execute('INSERT INTO Permission (UserID, dogID) VALUES (?, ?)', (user_id, dog_id))
+            cursor.execute('INSERT INTO Permission (UserID, dogID) VALUES (?, ?)', (target_user_id, dog_id))
 
-        conn.commit()
+        get_db().commit()
 
-        return 'Permission updated successfully'
+        return target_user_id + ' Permission added successfully'
     else:
-        
         return 'You do not have permission to create permission !!!'
 # end of create_permission api       
 
@@ -318,7 +314,7 @@ def delete_permission():
         get_db().commit()
         return target_user_id + ' Permission has delete'
     else: 
-        return 'You do not have permission to delete maps !!!'
+        return 'You do not have permission to delete Permission !!!'
 # end of delete permission
     
 # upload maps for every dogs
