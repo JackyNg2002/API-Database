@@ -113,5 +113,25 @@
 
     <button type="submit">提交</button>
   </form>
+
+  <h1>Upload map Test</h1>
+    <form action="http://localhost:5000/upload_maps" method="POST" enctype="multipart/form-data">
+        <label for="dog_id">Dog ID:</label>
+        <input type="text" name="dog_id" id="dog_id" required><br><br>
+        <label for="files">Select Files:</label>
+        <input type="file" name="files" id="files" multiple required><br><br>
+        <input type="submit" value="Upload">
+    </form>
+
+    <h1>delete map Test</h1>
+    <form action="http://localhost:5000/delete_maps" method="POST" enctype="multipart/form-data">
+        <label for="user_id">Your User ID：</label>
+        <input type="text" id="user_id" name="user_id" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <label for="dog_id">Dog ID:</label>
+        <input type="text" name="dog_id" id="dog_id" required><br><br>
+        <input type="submit" value="Delete">
+    </form>
 </body>
 </html>

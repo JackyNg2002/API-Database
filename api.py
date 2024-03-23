@@ -1,12 +1,15 @@
 from flask import Flask, request, jsonify,g, render_template
 from database import create_tables, generate_user_id, get_db
 import os
-import datetime
+from datetime import datetime
+import shutil
 
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/videos'
 
+UPLOAD_MAPS = 'static/maps'
+app.config['UPLOAD_MAPS'] = UPLOAD_MAPS
 
 @app.teardown_appcontext
 def close_db(exception):
@@ -136,11 +139,10 @@ def info_dog():
     password = request.args.get('password')
 
     cursor = get_db().cursor()
-    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND position ='normal'", (user_id, password))
+    
+    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND (position ='admin' OR position ='manager')", (user_id, password))
     row = cursor.fetchone()
     if row:
-        return 'Your position is normal, you cannot check dog info!!!'
-    else:
         conn = get_db()
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM Dog')
@@ -157,6 +159,8 @@ def info_dog():
                 dog_list.append(dog_data)
 
         return jsonify(dog_list)
+    else:
+        return 'You do not have permission to check dog info !!!'
 
 #for update_dog  
 @app.route('/update_dog', methods=['POST'])
@@ -228,11 +232,9 @@ def search_videos():
     dog_id = request.args.get('dog_id')
 
     cursor = get_db().cursor()
-    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND position ='normal'", (user_id, password))
+    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND (position ='admin' OR position ='manager')", (user_id, password))
     row = cursor.fetchone()
     if row:
-        return 'Your position is normal, you cannot search videos!!!'
-    else:
         conn = get_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM Video WHERE dogID = ?", (dog_id,))
@@ -244,6 +246,9 @@ def search_videos():
             return render_template('video.html', video_data_list=video_data_list, dog_id=dog_id)
         else:
             return 'Error dogID, cannot found the dog!!!'
+        
+    else:
+        return 'You do not have permission to search videos !!!'
 
 # API路由：创建或更新用户与狗的关联
 @app.route('/create_permission', methods=['POST'])
@@ -258,8 +263,6 @@ def create_permission():
     row = cursor.fetchone()
 
     if row:
-        return 'Your position is normal, you cannot create permission!!!'
-    else:
         conn = get_db()
         cursor = conn.cursor()
 
@@ -290,8 +293,74 @@ def create_permission():
         conn.commit()
 
         return 'Permission updated successfully'
+    else:
+        
+        return 'You do not have permission to create permission !!!'
         
 #End of dog api
+# 定义路由，处理上传文件的请求
+@app.route('/upload_maps', methods=['POST'])
+def upload_maps():
+    # 获取上传的文件列表
+    files = request.files.getlist('files')
+
+    # 获取用户输入的狗的ID
+    dog_id = request.form['dog_id']
+    
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Dog WHERE dogID=?', (dog_id,))
+    existing_dog = cursor.fetchone()
+
+    if existing_dog:
+    # 创建狗的文件夹
+        dog_folder = os.path.join(app.config['UPLOAD_MAPS'], dog_id)
+        os.makedirs(dog_folder, exist_ok=True)
+        # 遍历文件列表
+        # 遍历文件列表
+        for file in files:
+            # 生成唯一的文件名
+            filename = dog_id + '_' + file.filename
+            filepath = os.path.join(dog_folder, filename)
+
+            # 保存文件到指定路径
+            file.save(filepath)
+
+            # 将文件信息插入数据库
+            map_id = os.path.splitext(filename)[0]  # 使用文件名作为mapID
+            current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            map_src = filepath
+
+            # 检查数据库中是否已存在相同的狗ID和文件夹
+            cursor = get_db().cursor()
+            
+            cursor.execute("INSERT INTO Map (mapID, dogID, datetime, mapSrc) VALUES (?, ?, ?, ?)",
+                            (map_id, dog_id, current_datetime, map_src))
+            
+            get_db().commit()
+            
+
+        return 'Files uploaded successfully.'
+    else:
+        return 'no this dog'
+
+@app.route('/delete_maps', methods=['POST'])
+def delete_maps():
+    user_id = request.form['user_id']
+    password = request.form['password']
+    dog_id = request.form['dog_id']
+    cursor = get_db().cursor()
+    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND (position ='admin' OR position ='manager')", (user_id, password))
+    row = cursor.fetchone()
+    if row:
+        cursor.execute("DELETE FROM Map WHERE dogID = ?", (dog_id,))
+        get_db().commit()
+        # 删除文件夹及其内容
+        folder_path = os.path.join(app.config['UPLOAD_MAPS'], dog_id)
+        shutil.rmtree(folder_path)
+        return 'Account deleted successfully'
+    else:
+        return 'You do not have permission to delete maps !!!'
 
 if __name__ == '__main__':
     with app.app_context():
