@@ -69,7 +69,7 @@ def login():
             'name': row['name'],
             'position': row['position']
         }
-        return 'Login successfully'
+        return 'Login successfully, welcome ' + user_id + " your position is " + user['position']
     else:
         return 'Invalid user credentials'
 
