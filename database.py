@@ -71,3 +71,66 @@ def generate_user_id():
     user_id = 'U' + str(count + 1).zfill(3)
     return user_id
 
+with app.app_context():
+    
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    
+    
+    conn.commit()
+    cursor.execute("SELECT * FROM Map")
+    maps = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM User")
+    users = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM Dog")
+    dogs = cursor.fetchall()
+    
+    
+    cursor.execute("SELECT * FROM Map")
+    maps = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM Video")
+    videos = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM Permission")
+    permissions = cursor.fetchall()
+
+    for user in users:
+        
+        user_id = user["User_ID"]
+        name = user["name"]
+        position = user["position"]
+        password = user["password"]
+        
+        print(f"User_ID: {user_id}, name: {name}, position: {position}, password: {password}")
+
+    #show dog data
+    for dog in dogs:
+        
+        dogID = dog["dogID"]
+        name = dog["name"]
+        detail = dog["detail"]
+        
+        
+        print(f"dogID: {dogID}, name: {name}, detail: {detail}")
+
+    for map in maps:
+        
+        user_id = map["mapID"]
+        name = map["dogID"]
+        position = map["datetime"]
+        password = map["mapSrc"]
+        
+        print(f"User_ID: {user_id}, name: {name}, position: {position}, password: {password}")
+
+    for video in videos:
+        
+        video_id = video["videoID"]
+        dog_id = video["dogID"]
+        datetime = video["datetime"]
+        video_src = video["videoSrc"]
+        
+        print(f"Video ID: {video_id}, Dog ID: {dog_id}, Datetime: {datetime}, Video Src: {video_src}")

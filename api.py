@@ -11,6 +11,9 @@ UPLOAD_FOLDER = 'static/videos'
 UPLOAD_MAPS = 'static/maps'
 app.config['UPLOAD_MAPS'] = UPLOAD_MAPS
 
+UPLOAD_VIDEOS = 'static/VIDEOS'
+app.config['UPLOAD_VIDEOS'] = UPLOAD_VIDEOS
+
 @app.teardown_appcontext
 def close_db(exception):
     db = getattr(g, '_database', None)
@@ -205,10 +208,13 @@ def upload_video():
         if dog_exists:
             # Add the video details to the database
             # Save the video file to a folder
-            video_path = os.path.join(UPLOAD_FOLDER, video_file.filename)
+            video_folder = os.path.join(app.config['UPLOAD_VIDEOS'], dog_id)
+            os.makedirs(video_folder, exist_ok=True)
+            
+            video_path = os.path.join(video_folder, video_file.filename)
             video_file.save(video_path)
             # Get the current date
-            current_date = datetime.date.today().strftime("%d/%m/%Y")
+            current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             conn = get_db()
             cursor = conn.cursor()
             cursor.execute("SELECT COUNT(*) FROM Video")
@@ -325,19 +331,27 @@ def upload_maps():
 
             # 保存文件到指定路径
             file.save(filepath)
-
+            
             # 将文件信息插入数据库
-            map_id = os.path.splitext(filename)[0]  # 使用文件名作为mapID
+            
+            map_id = os.path.splitext(filename)[0]
             current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             map_src = filepath
 
             # 检查数据库中是否已存在相同的狗ID和文件夹
             cursor = get_db().cursor()
-            
-            cursor.execute("INSERT INTO Map (mapID, dogID, datetime, mapSrc) VALUES (?, ?, ?, ?)",
+            cursor.execute("SELECT mapID, mapSrc FROM Map WHERE dogID = ? AND mapID = ?", (dog_id, map_id))
+            existing_map = cursor.fetchone()
+
+            if existing_map:
+                cursor.execute("UPDATE Map SET mapSrc = ? WHERE dogID = ? AND mapID = ?", (map_src, dog_id, map_id))
+                get_db().commit()
+            else:
+                # 执行插入操作
+                cursor.execute("INSERT INTO Map (mapID, dogID, datetime, mapSrc) VALUES (?, ?, ?, ?)",
                             (map_id, dog_id, current_datetime, map_src))
             
-            get_db().commit()
+                get_db().commit()
             
 
         return 'Files uploaded successfully.'
@@ -358,8 +372,8 @@ def delete_maps():
         # 删除文件夹及其内容
         folder_path = os.path.join(app.config['UPLOAD_MAPS'], dog_id)
         shutil.rmtree(folder_path)
-        return 'Account deleted successfully'
-    else:
+        return dog_id + ' Map folder deleted successfully'
+    else: 
         return 'You do not have permission to delete maps !!!'
 
 if __name__ == '__main__':
