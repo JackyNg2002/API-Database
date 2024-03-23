@@ -256,7 +256,7 @@ def search_videos():
     else:
         return 'You do not have permission to search videos !!!'
 
-# API路由：创建或更新用户与狗的关联
+# create_permission api
 @app.route('/create_permission', methods=['POST'])
 def create_permission():
     user_id = request.form['user_id']
@@ -302,9 +302,26 @@ def create_permission():
     else:
         
         return 'You do not have permission to create permission !!!'
-        
-#End of dog api
-# 定义路由，处理上传文件的请求
+# end of create_permission api       
+
+# delete permission
+@app.route('/delete_permission', methods=['POST'])
+def delete_permission():
+    user_id = request.form['user_id']
+    password = request.form['password']
+    target_user_id = request.form['target_user_id']
+    cursor = get_db().cursor()
+    cursor.execute("SELECT * FROM User WHERE User_ID = ? AND password = ? AND (position ='admin' OR position ='manager')", (user_id, password))
+    row = cursor.fetchone()
+    if row:
+        cursor.execute("DELETE FROM Permission WHERE UserID = ?", (target_user_id,))
+        get_db().commit()
+        return target_user_id + ' Permission has delete'
+    else: 
+        return 'You do not have permission to delete maps !!!'
+# end of delete permission
+    
+# upload maps for every dogs
 @app.route('/upload_maps', methods=['POST'])
 def upload_maps():
     # 获取上传的文件列表
@@ -358,6 +375,7 @@ def upload_maps():
     else:
         return 'no this dog'
 
+# delete maps api
 @app.route('/delete_maps', methods=['POST'])
 def delete_maps():
     user_id = request.form['user_id']
@@ -375,6 +393,8 @@ def delete_maps():
         return dog_id + ' Map folder deleted successfully'
     else: 
         return 'You do not have permission to delete maps !!!'
+# end of delete maps api
+
 
 if __name__ == '__main__':
     with app.app_context():

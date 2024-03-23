@@ -111,7 +111,20 @@
     <label for="dog_id">Dog ID to add permissions to：</label>
     <input type="text" id="dog_id" name="dog_id" required><br><br>
 
-    <button type="submit">提交</button>
+    <button type="submit">submit</button>
+  </form>
+
+  <h1>delete_permission</h1>
+  <form action="http://localhost:5000/delete_permission" method="post">
+    <label for="user_id">Your User ID：</label>
+    <input type="text" id="user_id" name="user_id" required><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br><br>
+    <label for="target_user_id">User ID to delete permissions to：</label>
+    <input type="text" id="target_user_id" name="target_user_id" required><br><br>
+    
+
+    <button type="submit">submit</button>
   </form>
 
   <h1>Upload map Test</h1>
