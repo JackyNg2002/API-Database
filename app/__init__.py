@@ -6,8 +6,14 @@ from flask_cors import CORS
 
 from .config import config
 from .api.models import db
+
 from .api.models.user import UserModel
 from .api.models.revoked_token import RevokedTokenModel
+from .api.models.robot import RobotModel
+from .api.models.record import RecordModel
+from .api.models.map import MapModel
+from .api.models.permission import PermissionModel
+
 
 from .manage import migrate
 
