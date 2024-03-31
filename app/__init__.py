@@ -40,7 +40,7 @@ def create_app(config_name):
 
 def registerJwtHooks(jwt):
     @jwt.token_in_blocklist_loader
-    def check_if_token_in_blacklist(jwt_header,decrypted_token):
+    def check_if_token_in_blocklist(jwt_header,decrypted_token):
         jti = decrypted_token['jti']
         return RevokedTokenModel.is_jti_blacklisted(jti)
 

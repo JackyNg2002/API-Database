@@ -4,13 +4,10 @@ from ..models.user import UserModel
 from ..common.utils import res
 
 class UserService(Resource):
+    @jwt_required()
     def get(self):
         users = UserModel.get_all_user()
         result=[]
-        print("----------------------------------------------")
-        print(users)
         for user in users:
             result.append(user.dict())
-
-        print(result)
         return res(data=result, message="Users retrieved successfully", code=0, status=200)

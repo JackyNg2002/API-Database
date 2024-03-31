@@ -42,5 +42,5 @@ def generateToken(id):
     access_token = create_access_token(identity=id)
     refresh_token = create_refresh_token(identity=id)
     return {
-        'access_token':'Bearer '+ access_token,
-        'refresh_token':'Bearer '+ refresh_token}
+        'token':'Bearer '+ access_token,
+        'refreshToken':'Bearer '+ refresh_token}
