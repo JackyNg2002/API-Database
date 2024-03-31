@@ -19,7 +19,7 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     db.init_app(app)
 
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=True)
     jwt = JWTManager(app)
     registerJwtHooks(jwt)
 

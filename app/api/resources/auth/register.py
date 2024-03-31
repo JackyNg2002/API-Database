@@ -3,9 +3,9 @@ import uuid
 from flask_restful import Resource, reqparse
 from werkzeug.security import generate_password_hash
 
-from ..models.user import UserModel
-from ..common.utils import res
-from ..schema.register_sha import reg_args_valid
+from ...models.user import UserModel
+from ...common.utils import res
+from ...schema.register_sha import reg_args_valid
 
 
 class Register(Resource):
@@ -22,6 +22,6 @@ class Register(Resource):
                 data['pwd'] = generate_password_hash('{}{}'.format(data['salt'], data['pwd']))
                 user = UserModel(**data)
                 user.add_user()
-                return res(data=None, message="User {} created successfully".format(data['username']), code=0, status=200)
+                return res(data=None, message="User {} created successfully".format(data['username']))
             except Exception as e:
                 return res(data=None, message="An error occurred while creating the user", code=-1, status=500)

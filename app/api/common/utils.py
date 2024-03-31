@@ -1,4 +1,4 @@
-def res(data=None,message="OK",code=0000,status=200):
+def res(data=None,message="OK",code='0000',status=200):
     return {
         'code':code,
         'msg':message,

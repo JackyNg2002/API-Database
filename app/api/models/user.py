@@ -7,6 +7,9 @@ class UserModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True,nullable=False,autoincrement=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
+    # role only has two values: 'admin' and 'user' add constraint to limit the value
+    role = db.Column(db.Enum('admin','manger', 'user'), default='user', comment='role',nullable=False)
+
     pwd = db.Column(db.String(102), comment='password')
     salt = db.Column(db.String(32), comment='salt')
 
@@ -18,6 +21,7 @@ class UserModel(db.Model):
         return {
             'id': self.id,
             'username': self.username,
+            'roles': [self.role],
         }
     def getPwd(self):
         return {
