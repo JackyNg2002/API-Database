@@ -15,7 +15,7 @@ class Register(Resource):
         data = parser.parse_args()
 
         if UserModel.find_by_username(data['username']):
-            return res(data=None, message="User {} already exists".format(data['username']), code=-1, status=400)
+            return res(data=None, message="User {} already exists".format(data['username']), code="-1", status=400)
         else:
             try:
                 data['salt']=uuid.uuid4().hex
@@ -24,4 +24,4 @@ class Register(Resource):
                 user.add_user()
                 return res(data=None, message="User {} created successfully".format(data['username']))
             except Exception as e:
-                return res(data=None, message="An error occurred while creating the user", code=-1, status=500)
+                return res(data=None, message="An error occurred while creating the user", code="-1", status=500)

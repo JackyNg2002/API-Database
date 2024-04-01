@@ -9,12 +9,19 @@ class RobotModel(db.Model):
     type = db.Column(db.String(255), nullable=False)
     detail = db.Column(db.String(255), nullable=True)
 
-    permission = db.relationship('PermissionModel', backref=db.backref('robots', lazy='dynamic'))
-    map = db.relationship('MapModel', backref=db.backref('maps', lazy='dynamic'))
-    record = db.relationship('RecordModel', backref=db.backref('records', lazy='dynamic'))
+    permission = db.relationship('PermissionModel', backref=db.backref('robots', lazy='select'))
+    map = db.relationship('MapModel', backref=db.backref('maps', lazy='select'))
+    record = db.relationship('RecordModel', backref=db.backref('records', lazy='select'))
 
     def add_robot(self):
         db.session.add(self)
+        db.session.commit()
+
+    def update_robot(self):
+        db.session.commit()
+    
+    def delete_robot(self):
+        db.session.delete(self)
         db.session.commit()
 
     def dict(self):

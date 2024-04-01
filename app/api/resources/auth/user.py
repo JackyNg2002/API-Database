@@ -9,7 +9,8 @@ class User(Resource):
         current_user = get_jwt_identity()
         user_tuple = UserModel.find_by_username(current_user)
         if(user_tuple is None):
-            return res(data=None, message="User not found", code=-1, status=404)
+            return res(data=None, message="User not found", code="-1", status=404)
         (user,)=user_tuple
         result = user.dict()
         return res(data=result, message="User retrieved successfully")
+    

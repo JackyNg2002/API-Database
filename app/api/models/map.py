@@ -7,12 +7,19 @@ class MapModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True,nullable=False,autoincrement=True)
     robot_id = db.Column(db.Integer, db.ForeignKey('robots.id'), nullable=False)
-    robot=db.relationship('RobotModel',backref=db.backref('maps',lazy='dynamic'))
+    robot=db.relationship('RobotModel',backref=db.backref('maps',lazy='select'))
     datetime = db.Column(db.DateTime, default=datetime.now, nullable=False)
     name = db.Column(db.String(255), nullable=False, unique=True)
 
     def add_map(self):
         db.session.add(self)
+        db.session.commit()
+
+    def update_map(self):
+        db.session.commit()
+
+    def delete_map(self):
+        db.session.delete(self)
         db.session.commit()
     
     def dict(self):

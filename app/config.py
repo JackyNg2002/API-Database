@@ -15,6 +15,8 @@ class Config:
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
     JWT_BLOCKLIST_TOKEN_CHECKS = ['access']
 
+    HOST_URL = os.getenv('HOST_URL')
+
 
 class DevelopmentConfig(Config):
     DEBUG = True

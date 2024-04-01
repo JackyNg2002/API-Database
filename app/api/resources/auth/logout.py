@@ -12,6 +12,6 @@ class Logout(Resource):
         try:
             revoked_token = RevokedTokenModel(jti=jti)
             revoked_token.add()
-            return res(message="Successfully logged out", code=0, status=200)
+            return res(message="Successfully logged out")
         except Exception as e:
-            return res(message="Error: {}".format(e), code=-1, status=500)
+            return res(message="Error: {}".format(e), code="-1", status=500)

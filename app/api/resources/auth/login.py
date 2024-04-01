@@ -2,7 +2,7 @@ from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token,jwt_required,get_jwt_identity
 from werkzeug.security import check_password_hash
 
-from ...schema.register_sha import reg_args_valid
+from ...schema.register_sha import log_args_valid
 from ...models.user import UserModel
 from ...common.utils import res
 
@@ -10,7 +10,7 @@ from ...common.utils import res
 class Login(Resource):
     def post(self):
         parser = reqparse.RequestParser()
-        reg_args_valid(parser)
+        log_args_valid(parser)
         data = parser.parse_args()
 
         username = data['username']

@@ -21,7 +21,8 @@ from .api import api_blueprint
 
 
 def create_app(config_name):
-    app = Flask(__name__)
+    static_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),'..',config[config_name].DATA_STORAGE_PATH) )
+    app = Flask(__name__,static_folder=static_folder)
     app.config.from_object(config[config_name])
     db.init_app(app)
 
@@ -33,13 +34,13 @@ def create_app(config_name):
     CORS(app)
     
     # use for testing
-    from flask_restful import Resource,Api
-    api=Api(app)
-    class HelloWorld(Resource):
-        def get(self):
-            return {'hello': 'world'}
+    # from flask_restful import Resource,Api
+    # api=Api(app)
+    # class HelloWorld(Resource):
+    #     def get(self):
+    #         return {'hello': 'world'}
 
-    api.add_resource(HelloWorld, '/')
+    # api.add_resource(HelloWorld, '/')
 
 
     return app
