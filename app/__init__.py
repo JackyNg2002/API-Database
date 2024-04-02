@@ -50,5 +50,20 @@ def registerJwtHooks(jwt):
     def check_if_token_in_blocklist(jwt_header,decrypted_token):
         jti = decrypted_token['jti']
         return RevokedTokenModel.is_jti_blacklisted(jti)
+    @jwt.expired_token_loader
+    def expired_token_loader(jwt_header,jwt_data):
+        return {
+            'msg': 'expired token ',
+            'error': 'expired token required',
+            'code': '7777'
+        }, 200
+    @jwt.revoked_token_loader
+    def revoked_token_loader(jwt_header,jwt_data):
+        return {
+            'msg': 'Invalid token',
+            'error': 'invalid_token',
+            'code': '7777'
+        }, 200
+
 
 app = create_app(os.getenv('FLASK_ENV') or 'default')

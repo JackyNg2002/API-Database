@@ -16,7 +16,9 @@ class MapService(Resource):
         for map in allmap:
             ret = map.dict()
             ret['datetime'] = format_datetime_to_json(ret["datetime"],"%Y-%m-%d %H:%M:%S")
-            ret['path']=os.path.join(os.getenv("HOST_URL","http://localhost:5000"),data_path,'map',map.name.split('.')[0]+".png")
+            ret['path_png']=os.path.join(os.getenv("HOST_URL","http://localhost:5000"),data_path,'map',map.name.split('.')[0]+".png")
+            ret['path_posegraph']=os.path.join(os.getenv("HOST_URL","http://localhost:5000"),data_path,'map',map.name.split('.')[0]+".posegraph")
+            ret['path_posegraphData']=os.path.join(os.getenv("HOST_URL","http://localhost:5000"),data_path,'map',map.name.split('.')[0]+".posegraphData")
             result.append(ret)
         return res(data=result, message="Success")
     
@@ -28,12 +30,16 @@ class MapService(Resource):
         
         # get upload files
         reqparser.add_argument('png', type=werkzeug.datastructures.FileStorage, required=True, help='map png is required', location='files')
+        reqparser.add_argument('posegraph', type=werkzeug.datastructures.FileStorage, required=True, help='posegraph is required', location='files')
+        reqparser.add_argument('posegraphData', type=werkzeug.datastructures.FileStorage, required=True, help='mapData is required', location='files')
         
         args = reqparser.parse_args()
 
         storage_path = os.getenv("DATA_STORAGE_PATH")
         map_path = os.path.join(storage_path, 'map')
         map_png = args['png']
+        map_posegraph = args['posegraph']
+        map_posegraphData = args['posegraphData']
         
         
 
@@ -46,6 +52,9 @@ class MapService(Resource):
         if not os.path.exists(map_path):
             os.makedirs(map_path)
         map_png.save(os.path.join(map_path, args['name']+'.png'))
+        map_posegraph.save(os.path.join(map_path, args['name']+'.posegraph'))
+        map_posegraphData.save(os.path.join(map_path, args['name']+'.posegraphData'))
+
         map = MapModel(robot_id=robot_id, name=name)
         map.add_map()
         return res(message="Success")
@@ -63,6 +72,8 @@ class MapService(Resource):
         
         (map,) = map_tuple
         os.remove(os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map', map.name+'.png'))
+        os.remove(os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map', map.name+'.posegraph'))
+        os.remove(os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map', map.name+'.posegraphData'))
         map.delete_map()
         return res(message="Success")
     
@@ -81,6 +92,8 @@ class MapService(Resource):
         #update file name
         map_path = os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map')
         os.rename(os.path.join(map_path, map.name+'.png'), os.path.join(map_path, name+'.png'))
+        os.rename(os.path.join(map_path, map.name+'.posegraph'), os.path.join(map_path, name+'.posegraph'))
+        os.rename(os.path.join(map_path, map.name+'.posegraphData'), os.path.join(map_path, name+'.posegraphData'))
 
         map.name = name
         map.update_map()
