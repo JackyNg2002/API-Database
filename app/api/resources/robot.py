@@ -34,17 +34,19 @@ class RobotService(Resource):
     @jwt_required()
     def put(self):
         reqparser = reqparse.RequestParser()
+        reqparser.add_argument('id', type=int, required=True, help='id is required', location='json')
         reqparser.add_argument('name', type=str, required=True, help='name is required', location='json')
         reqparser.add_argument('type', type=str, required=True, help='type is required', location='json')
         reqparser.add_argument('detail', type=str, required=False, help='detail is required', location='json')
 
         args = reqparser.parse_args()
-        robot = RobotModel.find_by_name(args['name'])
+        robot = RobotModel.find_by_id(args['id'])
         if not robot:
             return res(message="Robot not found", status=400, code='-1')
         if args['detail'] is None:
             args['detail'] = ""
         (robot,) = robot
+        robot.name = args['name']
         robot.type = args['type']
         robot.detail = args['detail']
         robot.update_robot()
@@ -53,9 +55,9 @@ class RobotService(Resource):
     @jwt_required()
     def delete(self):
         reqparser = reqparse.RequestParser()
-        reqparser.add_argument('name', type=str, required=True, help='name is required', location='json')
+        reqparser.add_argument('id', type=int, required=True, help='id is required', location='json')
         args = reqparser.parse_args()
-        robot = RobotModel.find_by_name(args['name'])
+        robot = RobotModel.find_by_id(args['id'])
         if not robot:
             return res(message="Robot not found", status=400, code='-1')
         (robot,) = robot

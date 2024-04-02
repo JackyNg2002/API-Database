@@ -38,4 +38,6 @@ class RecordModel(db.Model):
     def get_all_record(cls):
         return db.session.query(cls).all()
     
-    
+    @classmethod
+    def find_by_id(cls, id):
+        return db.session.execute(db.select(cls).filter_by(id = id)).first()

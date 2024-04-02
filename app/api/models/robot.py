@@ -37,6 +37,10 @@ class RobotModel(db.Model):
         return db.session.execute(db.select(cls).filter_by(name = name)).first()
     
     @classmethod
+    def find_by_id(cls, id):
+        return db.session.execute(db.select(cls).filter_by(id = id)).first()
+    
+    @classmethod
     def get_all_robot(cls):
         return db.session.query(cls).all()
     

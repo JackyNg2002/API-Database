@@ -53,16 +53,16 @@ class MapService(Resource):
     @jwt_required()
     def delete(self):
         reqparser = reqparse.RequestParser()
-        reqparser.add_argument('name', type=str, required=True, help='name is required', location='json')
+        reqparser.add_argument('id', type=int, required=True, help='id is required', location='json')
         args = reqparser.parse_args()
-        name = args['name']
-        map_tuple=MapModel.find_by_name(name)
+        id = args['id']
+        map_tuple=MapModel.find_by_id(id)
        
         if not map_tuple:
             return res(message="Map not found", status=400,code='-1')
         
         (map,) = map_tuple
-        os.remove(os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map', name+'.png'))
+        os.remove(os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map', map.name+'.png'))
         map.delete_map()
         return res(message="Success")
     
@@ -70,20 +70,21 @@ class MapService(Resource):
     def put(self):
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('name', type=str, required=True, help='name is required', location='json')
-        reqparser.add_argument('new_name', type=str, required=True, help='new_name is required', location='json')
+        reqparser.add_argument('id', type=int, required=True, help='id is required', location='json')
         args = reqparser.parse_args()
         name = args['name']
-        new_name = args['new_name']
-        map = MapModel.find_by_name(name)
+        map = MapModel.find_by_id(args['id'])
         if not map:
             return res(message="Map not found", status=400,code='-1')
         
         (map,)=map
-        map.name = new_name
-        map.update_map()
-
         #update file name
         map_path = os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map')
-        os.rename(os.path.join(map_path, name+'.png'), os.path.join(map_path, new_name+'.png'))
+        os.rename(os.path.join(map_path, map.name+'.png'), os.path.join(map_path, name+'.png'))
+
+        map.name = name
+        map.update_map()
+
+
 
         return res(message="Success")
