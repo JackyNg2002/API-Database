@@ -22,7 +22,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
 class ProductionConfig(Config):
-    SQLITE_DB = os.getenv('SQLITE_DB')
+    SQLALCHEMY_DATABASE_URI=f'sqlite:///../data/database/database.db'
 
 class TestingConfig(Config):
     TESTING = True
