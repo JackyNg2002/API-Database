@@ -9,11 +9,19 @@ from ..common.utils import res,format_datetime_to_json
 class RecordService(Resource):
     @jwt_required()
     def get(self):
+
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('robot_id', type=int, required=False, help='robot_id is required', location='args')
+        args = reqparser.parse_args()
+        robot_id = args['robot_id']
+
         allrecord = RecordModel.get_all_record()
         data_path = os.getenv("DATA_STORAGE_PATH")
         result = []
         for record in allrecord:
             ret=record.dict()
+            if robot_id != None and record.robot_id != robot_id:
+                continue
             ret['path']=os.path.join(os.getenv("HOST_URL","http://localhost:5000"),data_path,'record',str(record.robot_id),record.name)
             ret['datetime']=format_datetime_to_json(ret['datetime'])
             result.append(ret)
@@ -70,7 +78,7 @@ class RecordService(Resource):
         args = reqparser.parse_args()
         name = args['name']
         id = args['id']
-        record = RecordModel.find_by_name(id)
+        record = RecordModel.find_by_id(id)
         if not record:
             return res(message="Record not found", status=400, code='-1')
         (record,) = record
