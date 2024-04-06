@@ -22,7 +22,7 @@ class MapService(Resource):
             result.append(ret)
         return res(data=result, message="Success")
     
-    @jwt_required()
+    # @jwt_required()
     def post(self):
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('robot_id', type=int, required=True, help='robot_id is required', location='form')
