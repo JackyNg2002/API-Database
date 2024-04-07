@@ -45,6 +45,9 @@ class MapService(Resource):
 
         robot_id = args['robot_id']
         name = args['name']
+        if name=='':
+            return res(message="Map name is required", status=400,code='-1')
+
         map = MapModel.find_by_name(name)
         if map:
             return res(message="Map name already exists", status=400,code='-1')
@@ -53,7 +56,7 @@ class MapService(Resource):
             os.makedirs(map_path)
         map_png.save(os.path.join(map_path, args['name']+'.png'))
         map_posegraph.save(os.path.join(map_path, args['name']+'.posegraph'))
-        map_posegraphData.save(os.path.join(map_path, args['name']+'.posegraphData'))
+        map_posegraphData.save(os.path.join(map_path, args['name']+'.data'))
 
         map = MapModel(robot_id=robot_id, name=name)
         map.add_map()
