@@ -7,9 +7,9 @@ from ..common.utils import res
 class RobotService(Resource):
     @jwt_required()
     def get(self):
-        reqparse = reqparse.RequestParser()
-        reqparse.add_argument('name',type=str,required=False,help='name is required',location='args')
-        args = reqparse.parse_args()
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('name',type=str,required=False,help='name is required',location='args')
+        args = reqparser.parse_args()
         if args['name']:
             robot = RobotModel.find_by_name(args['name'])
             if not robot:
