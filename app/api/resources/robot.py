@@ -7,6 +7,7 @@ from ..common.utils import res
 class RobotService(Resource):
     @jwt_required()
     def get(self):
+        reqparse = reqparse.RequestParser()
         reqparse.add_argument('name',type=str,required=False,help='name is required',location='args')
         args = reqparse.parse_args()
         if args['name']:
