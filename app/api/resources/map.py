@@ -76,7 +76,7 @@ class MapService(Resource):
         (map,) = map_tuple
         os.remove(os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map', map.name+'.png'))
         os.remove(os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map', map.name+'.posegraph'))
-        os.remove(os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map', map.name+'.posegraphData'))
+        os.remove(os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map', map.name+'.data'))
         map.delete_map()
         return res(message="Success")
     
@@ -96,7 +96,7 @@ class MapService(Resource):
         map_path = os.path.join(os.getenv("DATA_STORAGE_PATH"), 'map')
         os.rename(os.path.join(map_path, map.name+'.png'), os.path.join(map_path, name+'.png'))
         os.rename(os.path.join(map_path, map.name+'.posegraph'), os.path.join(map_path, name+'.posegraph'))
-        os.rename(os.path.join(map_path, map.name+'.posegraphData'), os.path.join(map_path, name+'.posegraphData'))
+        os.rename(os.path.join(map_path, map.name+'.data'), os.path.join(map_path, name+'.data'))
 
         map.name = name
         map.update_map()
