@@ -2,16 +2,23 @@ FROM python:3.9-alpine
 WORKDIR /flask_service
 EXPOSE 5000
 COPY . .
+COPY ./instance/database.db /flask_service/data/database/database.db
+
 RUN pip install -r requirements.txt 
-ENV FLASK_DEBUG=True \
+ENV FLASK_DEBUG=False \
     FLASK_APP=run.py \
     FLASK_RUN_HOST=0.0.0.0 \
     FLASK_ENV=production \
     SECRET_KEY=b'#q)\\x00\xd6\x9f<iBQ\xd7;,\xe2E' \
-    JWT_SECRET_KEY=b'#q)\\x00\xd6\x9f<iBQ\xd7;,\xe2E' 
+    JWT_SECRET_KEY=b'#q)\\x00\xd6\x9f<iBQ\xd7;,\xe2E' \
+    SQLITE3_DATABASE_PATH='instance/database.db'\
+    DATA_STORAGE_PATH='data'
 
+EXPOSE 8000
+WORKDIR /flask_service
 
 # RUN flask db migrate
 # RUN flask db upgrade
 
-CMD ["flask", "run"]
+# CMD ["flask", "run"]    
+CMD ["gunicorn","-b",":8000", "-w", "4", "run:app"]

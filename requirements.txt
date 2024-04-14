@@ -5,3 +5,4 @@ python-dotenv
 flask-migrate
 Flask-JWT-Extended
 Flask-Cors
+gunicorn
