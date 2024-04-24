@@ -11,6 +11,7 @@ class RecordService(Resource):
     def get(self):
 
         reqparser = reqparse.RequestParser()
+<<<<<<< HEAD
         reqparser.add_argument('robot_id', type=int, required=False, help='robot_id is required', location='args',default=None)
         reqparser.add_argument('limit', type=int, required=False, help='limit is required', location='args',default=None)
         reqparser.add_argument('offset', type=int, required=False, help='offset is required', location='args',default=None)
@@ -32,6 +33,22 @@ class RecordService(Resource):
             ret['datetime']=format_datetime_to_json(ret['datetime'])
             
             result['record'].append(ret)
+=======
+        reqparser.add_argument('robot_id', type=int, required=False, help='robot_id is required', location='args')
+        args = reqparser.parse_args()
+        robot_id = args['robot_id']
+
+        allrecord = RecordModel.get_all_record()
+        data_path = os.getenv("DATA_STORAGE_PATH")
+        result = []
+        for record in allrecord:
+            ret=record.dict()
+            if robot_id != None and record.robot_id != robot_id:
+                continue
+            ret['path']=os.path.join(os.getenv("HOST_URL","http://localhost:5000"),data_path,'record',str(record.robot_id),record.name)
+            ret['datetime']=format_datetime_to_json(ret['datetime'])
+            result.append(ret)
+>>>>>>> 89f9055002e6d3439cf64c3e926889812a772e4f
         return res(data=result, message="Success")
     
     @jwt_required()

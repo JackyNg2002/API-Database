@@ -1,0 +1,8 @@
+flask
+flask_restful
+flask_sqlalchemy
+python-dotenv
+flask-migrate
+Flask-JWT-Extended
+Flask-Cors
+gunicorn

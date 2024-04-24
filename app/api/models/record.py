@@ -35,6 +35,7 @@ class RecordModel(db.Model):
         return db.session.execute(db.select(cls).filter_by(name = name)).first()
     
     @classmethod
+<<<<<<< HEAD
     def get_all_record(cls,robot_id=None,limit=None,offset=None):
         query = db.select(cls)
         if robot_id:
@@ -44,6 +45,10 @@ class RecordModel(db.Model):
         if offset:
             query = query.offset(offset)
         return db.session.execute(query).all()
+=======
+    def get_all_record(cls):
+        return db.session.query(cls).all()
+>>>>>>> 89f9055002e6d3439cf64c3e926889812a772e4f
     
     @classmethod
     def find_by_id(cls, id):

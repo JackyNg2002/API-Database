@@ -2,14 +2,23 @@
 from flask_restful import Resource,reqparse
 from flask_jwt_extended import jwt_required
 from ..models.robot import RobotModel
+<<<<<<< HEAD
 from ..models.permission import PermissionModel
+=======
+>>>>>>> 89f9055002e6d3439cf64c3e926889812a772e4f
 from ..common.utils import res
 
 class RobotService(Resource):
     @jwt_required()
     def get(self):
+<<<<<<< HEAD
         reqparse.add_argument('name',type=str,required=False,help='name is required',location='args')
         args = reqparse.parse_args()
+=======
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('name',type=str,required=False,help='name is required',location='args')
+        args = reqparser.parse_args()
+>>>>>>> 89f9055002e6d3439cf64c3e926889812a772e4f
         if args['name']:
             robot = RobotModel.find_by_name(args['name'])
             if not robot:
@@ -71,10 +80,13 @@ class RobotService(Resource):
         if not robot:
             return res(message="Robot not found", status=400, code='-1')
         (robot,) = robot
+<<<<<<< HEAD
         permission=PermissionModel.find_by_robot_id(robot.id)
         if permission:
             for p in permission:
                 p.delete_permission()
+=======
+>>>>>>> 89f9055002e6d3439cf64c3e926889812a772e4f
         robot.delete_robot()
         return res(message="Robot deleted successfully")
     
