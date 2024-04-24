@@ -3,10 +3,7 @@ from flask_restful import Resource,reqparse
 from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash
 from ..models.user import UserModel
-<<<<<<< HEAD
 from ..models.permission import PermissionModel
-=======
->>>>>>> 89f9055002e6d3439cf64c3e926889812a772e4f
 from ..common.utils import res
 
 class UserService(Resource):
@@ -32,13 +29,10 @@ class UserService(Resource):
         if(user_tuple is None):
             return res(message="User not found", code="-1",status=404)
         (user,)=user_tuple
-<<<<<<< HEAD
-        permission=PermissionModel.find_by_user_id(user_id)
+        permission=PermissionModel.find_by_user_id_model(user_id)
         if permission:
             for p in permission:
                 p.delete_permission()
-=======
->>>>>>> 89f9055002e6d3439cf64c3e926889812a772e4f
         user.delete_user()
 
         return res(message="User deleted successfully")

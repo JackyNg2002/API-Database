@@ -33,6 +33,14 @@ class PermissionModel(db.Model):
         return db.session.execute(db.select(cls).filter_by(robot_id = robot_id)).all()
     
     @classmethod
+    def find_by_robot_id_model(cls,robot_id)->list:
+        return db.session.query(cls).filter_by(robot_id=robot_id).all()
+    
+    @classmethod
+    def find_by_user_id_model(cls,user_id)->list:
+        return db.session.query(cls).filter_by(user_id=user_id).all()
+    
+    @classmethod
     def get_all_permission(cls):
         return db.session.query(cls).all()
     
