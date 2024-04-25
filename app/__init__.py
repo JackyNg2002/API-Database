@@ -64,6 +64,20 @@ def registerJwtHooks(jwt):
             'error': 'invalid_token',
             'code': '7777'
         }, 200
+    @jwt.invalid_token_loader
+    def invalid_token_loader(jwt_header,jwt_data):
+        return {
+            'msg': 'Invalid token',
+            'error': 'invalid_token',
+            'code': '7777'
+        }, 200
+    @jwt.unauthorized_loader
+    def unauthorized_loader(jwt_header,jwt_data):
+        return {
+            'msg': 'Invalid token',
+            'error': 'invalid_token',
+            'code': '7777'
+        }, 200
 
 
 app = create_app(os.getenv('FLASK_ENV') or 'default')
